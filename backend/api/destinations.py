@@ -28,7 +28,7 @@ def geocode_city_nominatim(city_name: str) -> tuple:
     """Geocodes city name to (lat, lon, country, display_name) using Nominatim."""
     url = "https://nominatim.openstreetmap.org/search"
     headers = {"User-Agent": "SmartTravellerApp/1.0"}
-    params = {"city": city_name, "format": "json", "limit": 1}
+    params = {"q": city_name, "format": "json", "limit": 1}
     
     try:
         res = requests.get(url, headers=headers, params=params, timeout=5)
