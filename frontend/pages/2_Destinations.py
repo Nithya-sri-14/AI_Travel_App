@@ -46,8 +46,8 @@ if search_btn and city_input:
     # Fetch Destination details
     with st.spinner(f"Exploring {city_input.capitalize()}..."):
         try:
-            dest_res = requests.get(f"{backend_url}/api/destinations/search", params={"city": city_input}, timeout=10)
-            weather_res = requests.get(f"{backend_url}/api/weather", params={"city": city_input}, timeout=10)
+            dest_res = requests.get(f"{backend_url}/api/destinations/search", params={"city": city_input}, timeout=25)
+            weather_res = requests.get(f"{backend_url}/api/weather", params={"city": city_input}, timeout=25)
             
             # Reset previous searches first
             if "current_destination" in st.session_state:
