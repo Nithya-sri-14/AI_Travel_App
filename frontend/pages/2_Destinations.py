@@ -122,11 +122,14 @@ if "current_destination" in st.session_state and st.session_state.get("search_ci
             st.subheader("📍 Tourist Attractions")
             places_df = pd.DataFrame(dest["places"])
             if not places_df.empty:
+                import urllib.parse
                 for idx, row in places_df.iterrows():
+                    query_encoded = urllib.parse.quote(f"{row['place_name']}, {dest['city_name']}")
+                    google_maps_url = f"https://www.google.com/maps/search/?api=1&query={query_encoded}"
                     st.markdown(
                         f"""
                         <div class="stCard">
-                            <h4 style='margin:0; color:#4776e6;'>{row['place_name']}</h4>
+                            <h4 style='margin:0;'><a href="{google_maps_url}" target="_blank" style="color:#4776e6; text-decoration:none; display: inline-flex; align-items: center; gap: 4px;">{row['place_name']} <span style='font-size:0.85rem;'>🔗</span></a></h4>
                             <p style='margin:2px 0; font-size:0.9rem;'>🏷️ <b>Category:</b> {row['category']} | ⭐ <b>Rating:</b> {row['rating']}</p>
                             <p style='margin:0; font-size:0.85rem; color:#666;'>📍 {row['address']}</p>
                         </div>
@@ -149,11 +152,14 @@ if "current_destination" in st.session_state and st.session_state.get("search_ci
             m = folium.Map(location=[center_lat, center_lon], zoom_start=12)
             
             # Add markers
+            import urllib.parse
             for place in dest["places"]:
+                query_encoded = urllib.parse.quote(f"{place['place_name']}, {dest['city_name']}")
+                google_maps_url = f"https://www.google.com/maps/search/?api=1&query={query_encoded}"
                 # Custom popup styling
                 popup_html = f"""
                     <div style="font-family: 'Outfit', sans-serif; min-width: 150px;">
-                        <h4 style="margin:0 0 5px 0; color:#4776e6;">{place['place_name']}</h4>
+                        <h4 style="margin:0 0 5px 0;"><a href="{google_maps_url}" target="_blank" style="color:#4776e6; text-decoration:none;">{place['place_name']} 🔗</a></h4>
                         <b>Category:</b> {place['category']}<br/>
                         <b>Rating:</b> ⭐ {place['rating']}<br/>
                         <p style="margin:5px 0 0 0; font-size:0.8rem; color:#555;">{place['address']}</p>
