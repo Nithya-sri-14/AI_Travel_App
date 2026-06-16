@@ -25,8 +25,11 @@ if "user" not in st.session_state:
 if "token" not in st.session_state:
     st.session_state.token = None
 if "backend_url" not in st.session_state:
-    # Check st.secrets first, then environment variable, defaulting to localhost
-    st.session_state.backend_url = st.secrets.get("BACKEND_URL", os.environ.get("BACKEND_URL", "http://localhost:8000"))
+    # Check st.secrets first (wrapped in try/except to prevent StreamlitSecretNotFoundError when running locally)
+    try:
+        st.session_state.backend_url = st.secrets.get("BACKEND_URL", os.environ.get("BACKEND_URL", "http://localhost:8000"))
+    except Exception:
+        st.session_state.backend_url = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
 backend_url = st.session_state.backend_url
 
