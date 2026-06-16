@@ -98,7 +98,7 @@ if not st.session_state.user:
                             res = requests.post(
                                 f"{backend_url}/api/users/login",
                                 json={"email": login_email, "password": login_password},
-                                timeout=5
+                                timeout=30
                             )
                             if res.status_code == 200:
                                 data = res.json()
@@ -108,6 +108,12 @@ if not st.session_state.user:
                                 st.rerun()
                             else:
                                 st.error(f"Login failed: {res.json().get('detail', 'Invalid credentials')}")
+                        except requests.exceptions.Timeout:
+                            st.error(
+                                "⏱️ **Connection Timed Out:** The backend server is taking too long to respond. "
+                                "Render's free tier server automatically goes to sleep after inactivity and takes "
+                                "~30-50 seconds to boot up. Please wait a moment and click 'Sign In' again!"
+                            )
                         except Exception as e:
                             st.error(f"Error connecting to backend: {e}")
                             
@@ -128,12 +134,18 @@ if not st.session_state.user:
                             res = requests.post(
                                 f"{backend_url}/api/users/register",
                                 json={"name": reg_name, "email": reg_email, "phone": reg_phone, "password": reg_password},
-                                timeout=5
+                                timeout=30
                             )
                             if res.status_code == 201:
                                 st.success("Account created successfully! Please sign in in the Sign In tab.")
                             else:
                                 st.error(f"Registration failed: {res.json().get('detail', 'Error')}")
+                        except requests.exceptions.Timeout:
+                            st.error(
+                                "⏱️ **Connection Timed Out:** The backend server is taking too long to respond. "
+                                "Render's free tier server automatically goes to sleep after inactivity and takes "
+                                "~30-50 seconds to boot up. Please wait a moment and click 'Register Account' again!"
+                            )
                         except Exception as e:
                             st.error(f"Error connecting to backend: {e}")
 
