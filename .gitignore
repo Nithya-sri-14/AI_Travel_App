@@ -1,0 +1,30 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+venv_new/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local Database Files
+backend/traveller.db
+*.db
+*.sqlite
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Credentials & Configurations
+backend/.env
+.env
+.env.*
+
+# IDE Configurations
+.vscode/
+.idea/
