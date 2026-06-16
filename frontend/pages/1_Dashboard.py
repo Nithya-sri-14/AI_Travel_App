@@ -30,7 +30,14 @@ if not st.session_state.user:
 st.title("📊 Platform Dashboard & Analytics")
 st.write("Real-time travel metrics, analytics charts, and trend data.")
 
-backend_url = st.session_state.get("backend_url", "http://localhost:8000")
+# Try to resolve backend URL from session state, secrets, environment variables, or local fallback
+backend_url = st.session_state.get("backend_url")
+if not backend_url:
+    try:
+        backend_url = st.secrets.get("BACKEND_URL", os.environ.get("BACKEND_URL", "http://localhost:8000"))
+    except Exception:
+        backend_url = os.environ.get("BACKEND_URL", "http://localhost:8000")
+    st.session_state.backend_url = backend_url
 
 # Fetch Stats from Backend
 @st.cache_data(ttl=10) # Cache for 10 seconds

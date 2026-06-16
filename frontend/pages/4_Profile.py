@@ -26,7 +26,14 @@ if not st.session_state.user:
     st.page_link("app.py", label="Go to Home / Login Page", icon="🔑")
     st.stop()
 
-backend_url = st.session_state.get("backend_url", "http://localhost:8000")
+# Try to resolve backend URL from session state, secrets, environment variables, or local fallback
+backend_url = st.session_state.get("backend_url")
+if not backend_url:
+    try:
+        backend_url = st.secrets.get("BACKEND_URL", os.environ.get("BACKEND_URL", "http://localhost:8000"))
+    except Exception:
+        backend_url = os.environ.get("BACKEND_URL", "http://localhost:8000")
+    st.session_state.backend_url = backend_url
 
 st.title("👤 User Portal & System Governance")
 st.write("Manage your profile, view booking credentials, or audit system logs if Admin.")
